@@ -1,5 +1,7 @@
 # Dish!
 
+![Dish](http://i.imgur.com/FP1DJmt.png)
+
 Very simple conversion of hashes to plain Ruby objects.
 This is great for consuming JSON API's which is what I use it for.
 
