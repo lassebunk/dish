@@ -16,9 +16,29 @@ class DishTest < Test::Unit::TestCase
     assert_equal 2,          book.authors.length
     assert_equal "Well D.",  book.authors[1].name
     assert_equal true,       book.title?
+    assert_equal false,      book.active
     assert_equal false,      book.active?
     assert_nil               book.other
     assert_equal false,      book.other?
+  end
+
+  def test_key_type_indifference
+    hash = {
+      "title" => "My Title",
+      "authors" => [
+        { "id" => 1, "name" => "Mike Anderson" },
+        { "id" => 2, "name" => "Well D." }
+      ],
+      "active" => false
+    }
+
+    book = Dish::Plate.new(hash)
+    assert_equal "My Title", book.title
+    assert_equal 2,          book.authors.length
+    assert_equal "Well D.",  book.authors[1].name
+    assert_equal true,       book.title?
+    assert_equal false,      book.active
+    assert_equal false,      book.active?
   end
 
   def test_hash_helper
