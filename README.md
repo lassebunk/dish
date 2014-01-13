@@ -1,3 +1,5 @@
+[![Build Status](https://secure.travis-ci.org/lassebunk/dish.png)](http://travis-ci.org/lassebunk/dish)
+
 # Dish!
 
 ![Dish](http://i.imgur.com/FP1DJmt.png)
