@@ -34,11 +34,5 @@ module Dish
         else value
         end
       end
-
-      def dish_metaclass
-        class << self
-          self
-        end
-      end
   end
 end
