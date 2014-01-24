@@ -14,6 +14,10 @@ module Dish
       end
     end
 
+    def as_hash
+      @dish_original_hash
+    end
+
     private
 
       attr_reader :dish_original_hash

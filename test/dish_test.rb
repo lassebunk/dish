@@ -67,6 +67,19 @@ class DishTest < Test::Unit::TestCase
     assert_nil Dish(nil)
   end
 
+  def test_as_hash
+    hash = {
+      "a" => "a",
+      "b" => "b",
+      "c" => {
+        "1" => 1,
+        "2" => 2
+      }
+    }
+    dish = Dish(hash)
+    assert_equal "Hash", hash.c.as_hash.class.to_s
+  end
+
   def test_hash_ext
     hash = { a: 1, b: 2 }
     dish = hash.to_dish
