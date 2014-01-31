@@ -1,4 +1,5 @@
 require "test_helper"
+require "time" # for Time.parse in Ruby 1.9.3
 
 class DishTest < Test::Unit::TestCase
   def test_coercion
@@ -36,7 +37,7 @@ class DishTest < Test::Unit::TestCase
     class Author < Dish::Plate; end
 
     class Product < Dish::Plate
-      coerce :updated_at, -> (value) { Time.parse(value) }
+      coerce :updated_at, ->(value) { Time.parse(value) }
       coerce :authors, Author
     end
 

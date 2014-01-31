@@ -69,7 +69,7 @@ Values can automatically be coerced, for example into a custom `Dish` object or 
 class Author < Dish::Plate; end
 
 class Product < Dish::Plate
-  coerce :updated_at, -> (value) { Time.parse(value) }
+  coerce :updated_at, ->(value) { Time.parse(value) }
   coerce :authors, Author
 end
 
