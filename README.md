@@ -41,7 +41,7 @@ And you're good to go.
 
 Note: If you're using Dish with the BubbleWrap JSON module, please see below.
 
-# Example
+## Example
 
     hash = {
       title: "My Title",
@@ -60,6 +60,54 @@ Note: If you're using Dish with the BubbleWrap JSON module, please see below.
     book.active?         # => false
     book.other           # => nil
     book.other?          # => false
+
+## Coercion
+
+Values can automatically be coerced, for example into a custom `Dish` object or a `Time`, for example if you have an `updated_at` in the source.
+
+```ruby
+class Author < Dish::Plate; end
+
+class Product < Dish::Plate
+  coerce :updated_at, -> (value) { Time.parse(value) }
+  coerce :authors, Author
+end
+
+source_products = [
+  {
+    title: "Test Product",
+    updated_at: "2013-01-28 13:23:11",
+    authors: [
+      { id: 1, name: "First Author" },
+      { id: 2, name: "Second Author" }
+    ]
+  },
+  {
+    title: "Second Product",
+    updated_at: "2012-07-11 19:54:07",
+    authors: [
+      { id: 1, name: "Third Author" },
+      { id: 2, name: "Fourth Author" }
+    ]
+  }
+]
+
+products = Dish(source_products, Product)
+products.first.updated_at    # => instance of Time (2013-01-28 13:23:11)
+products.first.authors.first # => instance of Author
+
+# If you required "dish/ext", you can also:
+products = source_products.to_dish(Product)
+
+# The above example uses an array. You can do the same directly on a hash:
+hash = { title: "My Product", updated_at: "2014-01-15 09:12:45" }
+product = Dish(hash, Product) # => instance of Product
+product = hash.to_dish(Product) # => instance of Product when using "dish/ext"
+```
+
+This is inspired by [Hashie](https://github.com/intridea/hashie)'s coercion methods.
+
+Have fun!
 
 ## Notes
 

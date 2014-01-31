@@ -1,41 +1,61 @@
 module Dish
   class Plate
+    class << self
+      def coercions
+        @coercions ||= Hash.new(Plate)
+      end
+
+      def coerce(key, klass_or_proc)
+        coercions[key.to_s] = klass_or_proc
+      end
+    end
+
     def initialize(hash)
-      @dish_original_hash = Hash[hash.map { |k, v| [k.to_s, v] }]
+      @_original_hash = Hash[hash.map { |k, v| [k.to_s, v] }]
     end
 
     def method_missing(method, *args, &block)
       method = method.to_s
       if method.end_with?("?")
         key = method[0..-2]
-        dish_check_for_presence(key)
+        _check_for_presence(key)
       else
-        dish_get_value(method)
+        _get_value(method)
       end
     end
 
     def as_hash
-      @dish_original_hash
+      @_original_hash
     end
 
     private
 
-      attr_reader :dish_original_hash
+      attr_reader :_original_hash
 
-      def dish_get_value(key)
-        value = dish_original_hash[key]
-        dish_convert_value(value)
+      def _get_value(key)
+        value = _original_hash[key]
+        _convert_value(value, self.class.coercions[key])
       end
 
-      def dish_check_for_presence(key)
-        !!dish_get_value(key)
+      def _check_for_presence(key)
+        !!_get_value(key)
       end
 
-      def dish_convert_value(value)
+      def _convert_value(value, coercion)
         case value
-        when Hash then self.class.new(value)
-        when Array then value.map { |v| dish_convert_value(v) }
-        else value
+        when Array then value.map { |v| _convert_value(v, coercion) }
+        when Hash
+          if coercion.is_a?(Proc)
+            coercion.call(value)
+          else
+            coercion.new(value)
+          end
+        else
+          if coercion.is_a?(Proc)
+            coercion.call(value)
+          else
+            value
+          end
         end
       end
   end
