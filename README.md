@@ -109,6 +109,10 @@ This is inspired by [Hashie](https://github.com/intridea/hashie)'s coercion meth
 
 Have fun!
 
+## Accessing the original hash
+
+You can use the `as_hash` method for accessing the original hash.
+
 ## Notes
 
 ### Using with the BubbleWrap JSON module
