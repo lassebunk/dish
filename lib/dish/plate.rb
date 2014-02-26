@@ -16,9 +16,12 @@ module Dish
 
     def method_missing(method, *args, &block)
       method = method.to_s
-      if method.end_with?("?")
+      if method.end_with? '?'
         key = method[0..-2]
         _check_for_presence(key)
+      elsif method.end_with? '='
+        key = camel_case_key[0..-2]
+        _set_value(key, args.first)
       else
         _get_value(method)
       end
@@ -37,6 +40,11 @@ module Dish
         _convert_value(value, self.class.coercions[key])
       end
 
+      def _set_value(key, value)
+        value = _convert_value(value, self.class.coercions[key])
+        @_original_hash[key] = value
+      end
+ 
       def _check_for_presence(key)
         !!_get_value(key)
       end
