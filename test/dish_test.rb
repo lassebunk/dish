@@ -67,7 +67,7 @@ class DishTest < Test::Unit::TestCase
     assert_nil Dish(nil)
   end
 
-  def test_as_hash
+  def test_to_h
     hash = {
       "a" => "a",
       "b" => "b",
@@ -77,8 +77,8 @@ class DishTest < Test::Unit::TestCase
       }
     }
     dish = Dish(hash)
-    c_hash = dish.c.as_hash
-    assert_equal "Hash", dish.c.as_hash.class.to_s
+    c_hash = dish.c.to_h
+    assert_equal "Hash", dish.c.to_h.class.to_s
     assert_equal hash["c"]["1"], c_hash["1"]
     assert_equal hash["c"]["2"], c_hash["2"]
   end
