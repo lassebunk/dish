@@ -27,6 +27,11 @@ module Dish
       end
     end
 
+    def methods(regular = true)
+      valid_keys = as_hash.keys.map(&:to_sym)
+      valid_keys + super
+    end
+
     def as_hash
       @_original_hash
     end
