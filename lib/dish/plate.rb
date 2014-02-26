@@ -30,6 +30,10 @@ module Dish
 
     alias_method :as_hash, :to_h
 
+    def to_json(*args)
+      to_h.to_json(*args)
+    end
+
     private
 
       attr_reader :_original_hash
