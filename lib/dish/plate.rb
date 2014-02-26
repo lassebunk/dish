@@ -24,9 +24,11 @@ module Dish
       end
     end
 
-    def as_hash
+    def to_h
       @_original_hash
     end
+
+    alias_method :as_hash, :to_h
 
     private
 
