@@ -6,6 +6,7 @@
 
 Very simple conversion of hashes to plain Ruby objects.
 This is great for consuming JSON API's which is what I use it for.
+Also works in [RubyMotion](http://www.rubymotion.com/).
 
 ## Installation
 
