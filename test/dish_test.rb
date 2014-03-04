@@ -39,6 +39,10 @@ class DishTest < Test::Unit::TestCase
     assert_equal true,       book.title?
     assert_equal false,      book.active
     assert_equal false,      book.active?
+
+    book.active = nil
+    assert_equal nil,   book.active
+    assert_equal false, book.active?
   end
 
   def test_hash_helper
