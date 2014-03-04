@@ -16,14 +16,22 @@ module Dish
 
     def method_missing(method, *args, &block)
       method = method.to_s
+      key = method[0..-2]
+
       if method.end_with? '?'
-        key = method[0..-2]
         _check_for_presence(key)
       elsif method.end_with? '='
-        key = camel_case_key[0..-2]
         _set_value(key, args.first)
       else
         _get_value(method)
+      end
+    end
+
+    def respond_to_missing?(method, *args)
+      if as_hash.keys.include?(method.to_s)
+        true
+      else
+        super
       end
     end
 
