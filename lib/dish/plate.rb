@@ -31,7 +31,7 @@ module Dish
     alias_method :as_hash, :to_h
 
     def to_json(*args)
-      # If we're using RubyMotion #to_json isn't available
+      # If we're using RubyMotion #to_json isn't available like with Ruby's JSON stdlib
       if defined?(Motion::Project::Config)
         # From BubbleWrap: https://github.com/rubymotion/BubbleWrap/blob/master/motion/core/json.rb#L30-L32
         NSJSONSerialization.dataWithJSONObject(to_h, options: 0, error: nil).to_str
