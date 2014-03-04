@@ -40,27 +40,28 @@ Then run:
 
 And you're good to go.
 
-Note: If you're using Dish with the BubbleWrap JSON module, please see below.
+**NOTE:** If you're using Dish with the BubbleWrap JSON module, please see below.
 
 ## Example
+```ruby
+hash = {
+  title: "My Title",
+  authors: [
+    { id: 1, name: "Mike Anderson" },
+    { id: 2, name: "Well D." }
+  ],
+  active: false
+}
 
-    hash = {
-      title: "My Title",
-      authors: [
-        { id: 1, name: "Mike Anderson" },
-        { id: 2, name: "Well D." }
-      ],
-      active: false
-    }
-
-    book = Dish(hash) # or hash.to_dish if you required "dish/ext"
-    book.title           # => "My Title"
-    book.authors.length  # => 2
-    book.authors[1].name # => "Well D."
-    book.title?          # => true
-    book.active?         # => false
-    book.other           # => nil
-    book.other?          # => false
+book = Dish(hash) # or hash.to_dish if you required "dish/ext"
+book.title           # => "My Title"
+book.authors.length  # => 2
+book.authors[1].name # => "Well D."
+book.title?          # => true
+book.active?         # => false
+book.other           # => nil
+book.other?          # => false
+```
 
 ## Coercion
 
@@ -110,25 +111,29 @@ This is inspired by [Hashie](https://github.com/intridea/hashie)'s coercion meth
 
 Have fun!
 
-## Accessing the original hash
+## Converting back to Ruby/JSON objects
 
-You can use the `as_hash` method for accessing the original hash.
+You can use the `Dish::Plate#to_h` method for accessing the original hash. In addition `Dish::Plate#to_json` can be used for marshaling JSON if you are using RubyMotion (`NSJSONSerialization` is used) or have required [the "json" Ruby stdlib](http://www.ruby-doc.org/stdlib/libdoc/json/rdoc/JSON.html).
+
+**NOTE:** Previously `Dish::Plate#to_h` was called `Dish::Plate#as_hash`. The `Dish::Plate#as_hash` method is now deprecated.
 
 ## Notes
 
 ### Using with the BubbleWrap JSON module
 
 When you use the [BubbleWrap](https://github.com/rubymotion/BubbleWrap) gem to parse JSON into a hash, you can't use the
-`to_dish` methods directly because the `BW::JSON` module returns some sort of hash that hasn't got the methods from the real hash. I'm
+`Hash#to_dish` methods directly because the `BW::JSON` module returns some sort of hash that hasn't got the methods from the real hash. I'm
 fixing this, but in the meanwhile you can achieve the same result by doing this:
 
-    BW::HTTP.get("http://path.to/api/books/2") do |response|
-      json = BW::JSON.parse(response.body.to_s)
-      book = Dish(json) # This is the actual conversion
+```ruby
+BW::HTTP.get("http://path.to/api/books/2") do |response|
+  json = BW::JSON.parse(response.body.to_s)
+  book = Dish(json) # This is the actual conversion
 
-      title_label.text = book.title
-      author_label.text = book.authors.map(&:name).join(", ")
-    end
+  title_label.text = book.title
+  author_label.text = book.authors.map(&:name).join(", ")
+end
+```
 
 ## Contributing
 
