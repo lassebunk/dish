@@ -24,6 +24,10 @@ module Dish
       end
     end
 
+    def respond_to?(method)
+      _check_for_presence(method.to_s) || super
+    end
+
     def as_hash
       @_original_hash
     end

@@ -20,6 +20,9 @@ class DishTest < Test::Unit::TestCase
     assert_equal false,      book.active?
     assert_nil               book.other
     assert_equal false,      book.other?
+    assert_respond_to book,  :title
+    assert_respond_to book,  :authors
+    refute_respond_to book,  :doesnotexist
   end
 
   def test_key_type_indifference
