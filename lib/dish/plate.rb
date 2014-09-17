@@ -24,7 +24,7 @@ module Dish
       end
     end
 
-    def respond_to?(method)
+    def respond_to_missing?(method, *args)
       _check_for_presence(method.to_s) || super
     end
 

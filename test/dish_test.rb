@@ -23,6 +23,9 @@ class DishTest < Test::Unit::TestCase
     assert_respond_to book,  :title
     assert_respond_to book,  :authors
     refute_respond_to book,  :doesnotexist
+    assert_nothing_raised do
+      m = book.method(:title)
+    end
   end
 
   def test_key_type_indifference
