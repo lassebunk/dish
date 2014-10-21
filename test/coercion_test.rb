@@ -32,6 +32,23 @@ class DishTest < Test::Unit::TestCase
     assert products.map(&:authors).flatten.all? { |a| a.is_a?(Author) }
   end
 
+  def test_coercion_caching
+    products = api_response.to_dish(Product)
+
+    assert_equal products.first.authors.first.object_id, products.first.authors.first.object_id
+  end
+
+  def test_coercion_cache_busting
+    products = api_response.to_dish(Product)
+
+    author = products.first.authors.first
+    assert_equal author.name, products.first.authors.first.name
+
+    products.first.as_hash['authors'].first['name'] = 'Johnny Cache'
+
+    assert_not_equal author.name, products.first.authors.first.name
+  end
+
   private
 
     class Author < Dish::Plate; end

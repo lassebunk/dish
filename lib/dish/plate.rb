@@ -12,6 +12,7 @@ module Dish
 
     def initialize(hash)
       @_original_hash = Hash[hash.map { |k, v| [k.to_s, v] }]
+      @_value_cache = {}
     end
 
     def method_missing(method, *args, &block)
@@ -38,7 +39,11 @@ module Dish
 
       def _get_value(key)
         value = _original_hash[key]
-        _convert_value(value, self.class.coercions[key])
+        @_value_cache[_cache_key(value)] ||= _convert_value(value, self.class.coercions[key])
+      end
+
+      def _cache_key(value)
+        [value.object_id, @_original_hash.hash].join('')
       end
 
       def _check_for_presence(key)
