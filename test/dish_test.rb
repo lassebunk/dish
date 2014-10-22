@@ -24,7 +24,7 @@ class DishTest < Test::Unit::TestCase
     assert_respond_to book,  :authors
     refute_respond_to book,  :doesnotexist
     assert_nothing_raised do
-      m = book.method(:title)
+      book.method(:title)
     end
   end
 
@@ -105,6 +105,15 @@ class DishTest < Test::Unit::TestCase
     assert_equal 2, dish.length
     dish.each do |d|
       assert_instance_of Dish::Plate, d
+    end
+  end
+
+  def test_respond_to
+    hash = { a: 1, b: true, c: false, d: nil }
+    dish = Dish(hash)
+
+    hash.each do |key, _|
+      assert_respond_to dish, key
     end
   end
 end
