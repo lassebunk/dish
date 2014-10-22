@@ -17,9 +17,11 @@ module Dish
 
     def method_missing(method, *args, &block)
       method = method.to_s
+      key = method[0..-2]
       if method.end_with?("?")
-        key = method[0..-2]
         !!_get_value(key)
+      elsif method.end_with? '='
+        _set_value(key, args.first)
       else
         _get_value(method)
       end
@@ -51,6 +53,11 @@ module Dish
       end
     end
 
+    def methods(regular = true)
+      valid_keys = to_h.keys.map(&:to_sym)
+      valid_keys + super
+    end
+
     private
 
       attr_reader :_original_hash
@@ -64,6 +71,10 @@ module Dish
         [value.object_id, @_original_hash.hash].join('')
       end
 
+      def _set_value(key, value)
+        @_original_hash[key] = value
+      end
+ 
       def _check_for_presence(key)
         _original_hash.key?(key)
       end
