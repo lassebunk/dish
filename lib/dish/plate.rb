@@ -29,8 +29,26 @@ module Dish
       _check_for_presence(method.to_s) || super
     end
 
-    def as_hash
+    def to_h
       @_original_hash
+    end
+
+    def as_hash
+      # TODO: Add the version number where this was deprecated?
+      warn 'Dish::Plate#as_hash has been deprecated. Use Dish::Plate#to_h.'
+      to_h
+    end
+
+    def to_json(*args)
+      # If we're using RubyMotion #to_json isn't available like with Ruby's JSON stdlib
+      if defined?(Motion::Project::Config)
+        # From BubbleWrap: https://github.com/rubymotion/BubbleWrap/blob/master/motion/core/json.rb#L30-L32
+        NSJSONSerialization.dataWithJSONObject(to_h, options: 0, error: nil).to_str
+      elsif defined?(JSON)
+        to_h.to_json(*args)
+      else
+        raise "#{self.class}#to_json depends on Hash#to_json. Try again after using `require 'json'`."
+      end
     end
 
     private

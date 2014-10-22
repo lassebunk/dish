@@ -44,7 +44,7 @@ class DishTest < Test::Unit::TestCase
     author = products.first.authors.first
     assert_equal author.name, products.first.authors.first.name
 
-    products.first.as_hash['authors'].first['name'] = 'Johnny Cache'
+    products.first.to_h['authors'].first['name'] = 'Johnny Cache'
 
     assert_not_equal author.name, products.first.authors.first.name
   end
