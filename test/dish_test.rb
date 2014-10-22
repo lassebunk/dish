@@ -24,7 +24,7 @@ class DishTest < Test::Unit::TestCase
     assert_respond_to book,  :authors
     refute_respond_to book,  :doesnotexist
     assert_nothing_raised do
-      m = book.method(:title)
+      book.method(:title)
     end
   end
 
