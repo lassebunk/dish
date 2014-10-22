@@ -107,4 +107,13 @@ class DishTest < Test::Unit::TestCase
       assert_instance_of Dish::Plate, d
     end
   end
+
+  def test_respond_to
+    hash = { a: 1, b: true, c: false, d: nil }
+    dish = Dish(hash)
+
+    hash.each do |key, _|
+      assert_respond_to dish, key
+    end
+  end
 end

@@ -19,7 +19,7 @@ module Dish
       method = method.to_s
       if method.end_with?("?")
         key = method[0..-2]
-        _check_for_presence(key)
+        !!_get_value(key)
       else
         _get_value(method)
       end
@@ -47,7 +47,7 @@ module Dish
       end
 
       def _check_for_presence(key)
-        !!_get_value(key)
+        _original_hash.key?(key)
       end
 
       def _convert_value(value, coercion)
