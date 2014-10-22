@@ -45,11 +45,6 @@ class DishTest < Test::Unit::TestCase
     assert_equal true,       book.title?
     assert_equal false,      book.active
     assert_equal false,      book.active?
-
-
-    book.active = nil
-    assert_equal nil,   book.active
-    assert_equal false, book.active?
   end
 
   def test_hash_helper
@@ -120,5 +115,27 @@ class DishTest < Test::Unit::TestCase
     hash.each do |key, _|
       assert_respond_to dish, key
     end
+  end
+
+  def test_set_value
+    hash = { a: 1, b: 2, c: false }
+    dish = Dish(hash)
+
+    dish.a = "other value"
+    assert_equal "other value", dish.a
+    
+    dish.b = nil
+    assert_equal nil, dish.b
+    assert_equal false, dish.b?
+
+    dish.c = true
+    assert_equal true, dish.c
+    assert_equal true, dish.c?
+
+    dish.d = "new value"
+    assert_equal "new value", dish.d
+
+    assert_equal({ "a" => "other value", "b" => nil, "c" => true, "d" => "new value" },
+                 dish.to_h)
   end
 end
