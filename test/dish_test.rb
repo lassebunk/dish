@@ -138,4 +138,11 @@ class DishTest < Test::Unit::TestCase
     assert_equal({ "a" => "other value", "b" => nil, "c" => true, "d" => "new value" },
                  dish.to_h)
   end
+
+  def test_methods
+    hash = { a: 1, b: 2 }
+    dish = Dish(hash)
+
+    assert_equal [:a, :b], dish.methods[0..1]
+  end
 end
