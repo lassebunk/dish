@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.0.6
+
+* `Dish::Plate#==` now compares with the original hash, or anything that responds to `to_h`.
+* `Dish::Plate#hash` is taken from the original hash. This enables using `group_by` and `uniq`.
+
 ## 0.0.5
 
 * Supports setting values via `some_dish_object.key = 'value'`.
