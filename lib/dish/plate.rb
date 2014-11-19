@@ -19,6 +19,11 @@ module Dish
       to_h.hash
     end
 
+    def ==(other)
+      return false unless other.respond_to?(:to_h)
+      to_h == other.to_h
+    end
+
     def method_missing(method, *args, &block)
       method = method.to_s
       key = method[0..-2]

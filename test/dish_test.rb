@@ -152,4 +152,12 @@ class DishTest < Test::Unit::TestCase
     dish2 = Dish(hash.dup)
     assert_equal dish2.hash, dish1.hash
   end
+
+  def test_equality
+    hash = { a: 1, b: 2 }
+    dish1 = Dish(hash)
+    dish2 = Dish(hash.dup)
+    assert dish1 == dish2
+    assert !(dish1 == 3)
+  end
 end
