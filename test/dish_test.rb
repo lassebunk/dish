@@ -145,4 +145,11 @@ class DishTest < Test::Unit::TestCase
 
     assert_equal [:a, :b], dish.methods[0..1]
   end
+
+  def test_hash_attribute
+    hash = { a: 1, b: 2 }
+    dish1 = Dish(hash)
+    dish2 = Dish(hash.dup)
+    assert_equal dish2.hash, dish1.hash
+  end
 end

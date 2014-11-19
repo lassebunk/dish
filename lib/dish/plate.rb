@@ -15,6 +15,10 @@ module Dish
       @_value_cache = {}
     end
 
+    def hash
+      to_h.hash
+    end
+
     def method_missing(method, *args, &block)
       method = method.to_s
       key = method[0..-2]
