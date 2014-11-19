@@ -24,6 +24,8 @@ module Dish
       to_h == other.to_h
     end
 
+    alias :eql? :==
+
     def method_missing(method, *args, &block)
       method = method.to_s
       key = method[0..-2]
