@@ -48,12 +48,6 @@ module Dish
       _hash
     end
 
-    def as_hash
-      # TODO: Add the version number where this was deprecated?
-      warn 'Dish::Plate#as_hash has been deprecated. Use Dish::Plate#to_h.'
-      to_h
-    end
-
     def to_json(*args)
       # If we're using RubyMotion #to_json isn't available like with Ruby's JSON stdlib
       if defined?(Motion::Project::Config)
