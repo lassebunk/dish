@@ -11,8 +11,8 @@ module Dish
     end
 
     def initialize(hash)
-      @_original_hash = Hash[hash.map { |k, v| [k.to_s, v] }]
-      @_value_cache = {}
+      @_hash = Hash[hash.map { |k, v| [k.to_s, v] }]
+      @_cache = {}
     end
 
     def hash
@@ -30,20 +30,20 @@ module Dish
       method = method.to_s
       key = method[0..-2]
       if method.end_with?("?")
-        !!_get_value(key)
+        !!_get(key)
       elsif method.end_with? '='
-        _set_value(key, args.first)
+        _set(key, args.first)
       else
-        _get_value(method)
+        _get(method)
       end
     end
 
     def respond_to_missing?(method, *args)
-      _check_for_presence(method.to_s) || super
+      _key?(method.to_s) || super
     end
 
     def to_h
-      @_original_hash
+      _hash
     end
 
     def as_hash
@@ -71,41 +71,42 @@ module Dish
 
     private
 
-      attr_reader :_original_hash
+    attr_reader :_hash
+    attr_reader :_cache
 
-      def _get_value(key)
-        value = _original_hash[key]
-        @_value_cache[_cache_key(value)] ||= _convert_value(value, self.class.coercions[key])
-      end
+    def _get(key)
+      value = _hash[key]
+      _cache[_cache_key(value)] ||= _convert(value, self.class.coercions[key])
+    end
 
-      def _cache_key(value)
-        [value.object_id, @_original_hash.hash].join('')
-      end
+    def _set(key, value)
+      _hash[key] = value
+    end
 
-      def _set_value(key, value)
-        @_original_hash[key] = value
-      end
- 
-      def _check_for_presence(key)
-        _original_hash.key?(key)
-      end
+    def _cache_key(value)
+      [value.object_id, _hash.hash].join('')
+    end
 
-      def _convert_value(value, coercion)
-        case value
-        when Array then value.map { |v| _convert_value(v, coercion) }
-        when Hash
-          if coercion.is_a?(Proc)
-            coercion.call(value)
-          else
-            coercion.new(value)
-          end
+    def _key?(key)
+      _hash.key?(key)
+    end
+
+    def _convert(value, coercion)
+      case value
+      when Array then value.map { |v| _convert(v, coercion) }
+      when Hash
+        if coercion.is_a?(Proc)
+          coercion.call(value)
         else
-          if coercion.is_a?(Proc)
-            coercion.call(value)
-          else
-            value
-          end
+          coercion.new(value)
+        end
+      else
+        if coercion.is_a?(Proc)
+          coercion.call(value)
+        else
+          value
         end
       end
+    end
   end
 end
