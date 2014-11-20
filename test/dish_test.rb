@@ -161,6 +161,22 @@ class DishTest < Test::Unit::TestCase
     assert !(dish1 == 3)
   end
 
+  def test_equality_for_deep_changes
+    hash = {
+      authors: [
+        { id: 1, name: "Steve Jobs" },
+        { id: 2, name: "Peter Anderson" }
+      ]
+    }
+
+    dish1 = Dish(hash)
+    dish2 = Dish(hash)
+
+    assert_equal dish1, dish2
+    dish1.authors.first.name = "Something else"
+    assert_not_equal dish1, dish2
+  end
+
   def test_eql
     hash = { a: 1, b: 2 }
     dish1 = Dish(hash)
