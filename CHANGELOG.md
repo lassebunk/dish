@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.0.7
+
+* Simplified the internal `Dish::Plate` method names.
+* Updated the coercion cache to prevent memory leaks.
+
 ## 0.0.6
 
 * `Dish::Plate#==` now compares with the original hash, or anything that responds to `to_h`.

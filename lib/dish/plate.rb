@@ -12,7 +12,9 @@ module Dish
 
     def initialize(hash)
       @_hash = Hash[hash.map { |k, v| [k.to_s, v] }]
-      @_cache = {}
+      @_cache = Hash.new do |cache, key|
+        cache[key] = _convert(_hash[key], self.class.coercions[key])
+      end
     end
 
     def hash
@@ -75,16 +77,12 @@ module Dish
     attr_reader :_cache
 
     def _get(key)
-      value = _hash[key]
-      _cache[_cache_key(value)] ||= _convert(value, self.class.coercions[key])
+      _cache[key]
     end
 
     def _set(key, value)
+      _cache.delete(key)
       _hash[key] = value
-    end
-
-    def _cache_key(value)
-      [value.object_id, _hash.hash].join('')
     end
 
     def _key?(key)

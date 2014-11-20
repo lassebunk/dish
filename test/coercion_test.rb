@@ -40,13 +40,9 @@ class DishTest < Test::Unit::TestCase
 
   def test_coercion_cache_busting
     products = api_response.to_dish(Product)
-
-    author = products.first.authors.first
-    assert_equal author.name, products.first.authors.first.name
-
-    products.first.to_h['authors'].first['name'] = 'Johnny Cache'
-
-    assert_not_equal author.name, products.first.authors.first.name
+    assert_equal "First Author", products.first.authors.first.name
+    products.first.authors.first.name = "Johnny Cache"
+    assert_equal "Johnny Cache", products.first.authors.first.name
   end
 
   private
